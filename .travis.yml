@@ -17,7 +17,17 @@ addons:
       - mysql-server
       - mysql-client
 
+cache:
+  directories:
+  - $HOME/downloads
+
 install: mvn compile
+
+before_script:
+  - |
+    if [ "$BACKEND" == "hbase" ]; then
+      .travis/install-hbase.sh
+    fi
 
 script: mvn test -Pcore-test,$BACKEND
 
@@ -55,6 +65,7 @@ env:
     - BACKEND=scylladb
     - BACKEND=rocksdb
     - BACKEND=mysql
+    - BACKEND=hbase
   global:
     - DEPLOYED=false
     - secure: dYmFTVeEtRzLNaHp9ToTV/+CkTD0/rEj+K7dRN8wsv/yg4pbqwnyWbSXcqMlj6iNFzAz3nPbmFLCvAWON9/SMN9iJIT6x/xfcf+LqCT8QWczo2nc9xeX144ij2VHX1Drvtk5fRTMaTXRfWEQIrjqx2yrJTIdrXWzWSaZLFv1CRCUizEiGGCePnzUWxx9dBypNyC6IaH6lIv8uN5E6+10SYhb7UJGjWUMDg1bCeW9X7X2wg4QpsGDzlGFXT2EBPU/dAb5attTAtW8dKxrCZqZJTPWe0BarXDBR4PO15BC+a0V1g8LwexedtDjJeFRcGPaJ5NN4d3jDSusCzt5Jf4U0Wa1gDRMVTU3jT+KYkm5eoV4wOZMySobjh6VpQH/LyL0QTDy5apRPAxw+wO+tc91P+nkJmnlr3pN8abtMZ6NciZizUBYQRgR/m2Ir0stvtbZxBQOATuPtBgNDKiDgVdSYcRJzSqYEMFOn35AvsDZ9aUsyC8k29PCUZ0gQO2Is6cV1ClFBnM52hfU9XX0gu+NviSnYNGvcokod8z9VjGtnM7V3LYjqXSFqO9kkMbOmkME1tD2Bh/klw2/OM+2tBBZiAgxB89st5jSUHI4a2hpUyaQBezJUcU9t2vVT/zAVEIqzw2PDxkMU7t0n6L1x+qUIUTG/WynfIni5msxuR7HoiU=
